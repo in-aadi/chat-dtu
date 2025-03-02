@@ -2,36 +2,41 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
+export async function POST(
 	req: Request,
 	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = await auth();
 		const { courseId } = await params;
-		const values = await req.json();
+		const { url, name } = await req.json();
 
 		if (!userId) {
 			return new NextResponse("Unauthorized", { status: 401 });
 		}
 
-		const course = await db.course.update({
+		const courseOwner = await db.course.findUnique({
 			where: {
 				id: courseId,
 				userId,
 			},
+		});
+
+		if (!courseOwner) {
+			return new NextResponse("Unauthorized", { status: 401 });
+		}
+
+		const attachment = await db.attachment.create({
 			data: {
-				...values,
+				url,
+				name,
+				courseId,
 			},
 		});
 
-		if (!course) {
-			return new NextResponse("Course not found", { status: 404 });
-		}
-
-		return NextResponse.json(course);
+		return NextResponse.json(attachment);
 	} catch (error) {
-		console.log("[COURSE_ID_PATCH]", error);
+		console.log("[COURSE_ID_ATTACHMENTS_POST]", error);
 		return new NextResponse("Internal Error", { status: 500 });
 	}
 }
