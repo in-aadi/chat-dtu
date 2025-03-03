@@ -6,4 +6,8 @@ const nextConfig: NextConfig = {
 	},
 };
 
+module.exports = {
+	serverExternalPackages: ["@mux/mux-node"],
+};
+
 export default nextConfig;
