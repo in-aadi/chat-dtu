@@ -2,11 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	images: {
-		domains: ["utfs.io", "2rz3pqehpc.ufs.sh"],
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "utfs.io",
+				port: "",
+				pathname: "/**",
+				search: "",
+			},
+		],
 	},
-};
-
-module.exports = {
 	serverExternalPackages: ["@mux/mux-node"],
 };
 

@@ -12,13 +12,14 @@ import { ChaptersForm } from "./_components/chapters-form";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 	const { userId } = await auth();
+	const { courseId } = await params;
 
 	if (!userId) {
 		return redirect("/");
 	}
 	const course = await db.course.findUnique({
 		where: {
-			id: params.courseId,
+			id: courseId,
 			userId,
 		},
 		include: {
