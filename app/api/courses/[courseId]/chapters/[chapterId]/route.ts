@@ -42,22 +42,22 @@ export async function DELETE(
 			return new NextResponse("Chapter not found", { status: 404 });
 		}
 
-		// if (chapter.videoUrl) {
-		// 	const existingMuxData = await db.muxData.findFirst({
-		// 		where: {
-		// 			chapterId,
-		// 		},
-		// 	});
+		if (chapter.videoUrl) {
+			const existingMuxData = await db.muxData.findFirst({
+				where: {
+					chapterId,
+				},
+			});
 
-		// 	if (existingMuxData) {
-		// 		await mux.video.assets.delete(existingMuxData.assetId);
-		// 		await db.muxData.delete({
-		// 			where: {
-		// 				id: existingMuxData.id,
-		// 			},
-		// 		});
-		// 	}
-		// }
+			if (existingMuxData) {
+				await mux.video.assets.delete(existingMuxData.assetId);
+				await db.muxData.delete({
+					where: {
+						id: existingMuxData.id,
+					},
+				});
+			}
+		}
 
 		const deletedChapter = await db.chapter.delete({
 			where: {
