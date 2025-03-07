@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconBadge } from "./icon-badge";
 import { BookOpen } from "lucide-react";
+import { CourseProgress } from "./course-progress";
 
 interface CourseCardProps {
 	id: string;
@@ -40,12 +41,16 @@ export const CourseCard = ({
 						</div>
 					</div>
 					{progress != 0 ? (
-						<div>{progress}</div>
-					) : (
-						<p className="text-md md:text-sm font-medium text-slate-700">
-							Not started
-						</p>
-					)}
+						<CourseProgress
+							variant={progress === 1000 ? "success" : "default"}
+							size="sm"
+							value={progress!}
+						/>
+				) : (
+					 	<p className="text-md md:text-sm font-medium text-slate-700">
+					 		Not started
+					 	</p>
+					 )}
 				</div>
 			</div>
 		</Link>
